@@ -1,5 +1,4 @@
-let data=
-[{"cate":1,"hira":"おおきい","kanji":"大きい","kor":"크다"},
+{ "data":[{"cate":1,"hira":"おおきい","kanji":"大きい","kor":"크다"},
     {"cate":1,"hira":"ちいさい","kanji":"小さい","kor":"작다"},
     {"cate":1,"hira":"あたらしい","kanji":"新しい","kor":"새롭다"},
     {"cate":1,"hira":"ふるい","kanji":"古い","kor":"오래되다"},
@@ -81,3 +80,4 @@ let data=
     {"cate":2,"hira":"せっきょくてき","kanji":"積極的","kor":"적극적인"},
     {"cate":2,"hira":"しょうきょくてき","kanji":"消極的","kor":"소극적인"},
     {"cate":2,"hira":"ゆうのう","kanji":"有能","kor":"유능한"}]
+}

@@ -29,9 +29,13 @@
             <tbody id="dataTable">
             </tbody>
         </table>
-        <script src="data.js"></script>
+        
         <script>
-            function dango() {
+            fetch('data.json').then(response => response.json()).then(jpndata => {
+                dango(jpndata.data);
+            });
+
+            function dango(data) {
                 const tableBody = document.getElementById('dataTable');
                 data.forEach(item => {
                     const row = document.createElement('tr');
