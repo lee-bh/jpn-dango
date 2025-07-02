@@ -3,21 +3,53 @@
         <meta charset="utf-8">
         <title>japanese dango practice</title>
         <style>
-            h1{font-size: 1rem;}
+            h1,h2,body{margin:0; padding:0;}
+            body{padding:2rem;}
+            h1{font-size: 1rem; margin-bottom:4rem;}
             input[type="checkbox"]{
                 width: 1rem;
                 height: 1rem;
             }
+            header{display: flex; margin-bottom:4rem;}
+    
+            #quiz-question {
+                font-size: 2rem;
+                margin-bottom: 10px;
+            }
+            #quiz-options {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+            #quiz-options button {
+                padding: 15px;
+                border: 1px solid #000000;
+                background-color: #ccc;
+                cursor: pointer;
+                font-size: 1.2rem;
+            }
+            #quiz-options button:hover {
+                background-color: black;
+                color: white;
+            }
+            #quiz-result {
+                margin-top: 10px;
+                font-weight: bold;
+                font-size: 1.2rem;
+            }
+            table{margin-bottom: 4rem;}
         </style>
     </head>
     <body>
         <h1>japanese dango practice</h1>
         
-        <div style="margin-bottom: 10px;">
-            <label>
-                <input type="checkbox" id="toggleHira" checked> 히라가나 표시
-            </label>
+
+        <div id="quiz-container">
+            <h2 id="quiz-question"></h2>
+            <div id="quiz-options"></div>
+            <div id="quiz-result"></div>
         </div>
+
         <table border="1" style="border-collapse: collapse; width: 100%;">
             <thead>
                 <tr>
@@ -29,16 +61,27 @@
             <tbody id="dataTable">
             </tbody>
         </table>
+        <footer>
+            leebh.net&copy;2025. All Rights Reserved.
+        </footer>
+
         
         <script>
+            let quizData = [];
+            let currentQuestion = null;
+
             fetch('data.json').then(response => response.json()).then(jpndata => {
                 dango(jpndata.data);
+                quizData = jpndata.data;
+                startQuiz();
             });
 
             function dango(data) {
                 const tableBody = document.getElementById('dataTable');
+                if (!data) return;
                 data.forEach(item => {
                     const row = document.createElement('tr');
+                    row.setAttribute('data-hira', item.hira);
                     row.innerHTML = `
                         <td class="hira-column">${item.hira}</td>
                         <td>${item.kanji}</td>
@@ -48,16 +91,55 @@
                 });
             }
 
-            function toggleHiraColumn() {
-                const isChecked = document.getElementById('toggleHira').checked;
-                const hiraColumns = document.getElementsByClassName('hira-column');
-                for (let column of hiraColumns) {
-                    column.style.display = isChecked ? '' : 'none';
-                }
+            function startQuiz() {
+                nextQuestion();
             }
 
-            document.getElementById('toggleHira').addEventListener('change', toggleHiraColumn);
-            dango();
+            function nextQuestion() {
+                currentQuestion = quizData[Math.floor(Math.random() * quizData.length)];
+                document.getElementById('quiz-question').textContent = currentQuestion.kor;
+                
+                const options = [currentQuestion];
+                while (options.length < 4) {
+                    const randomOption = quizData[Math.floor(Math.random() * quizData.length)];
+                    if (!options.some(opt => opt.kor === randomOption.kor)) {
+                        options.push(randomOption);
+                    }
+                }
+
+                // Shuffle options
+                for (let i = options.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [options[i], options[j]] = [options[j], options[i]];
+                }
+
+                const optionsContainer = document.getElementById('quiz-options');
+                optionsContainer.innerHTML = '';
+                options.forEach(option => {
+                    const button = document.createElement('button');
+                    button.textContent = `${option.kanji} (${option.hira})`;
+                    button.addEventListener('click', () => checkAnswer(option));
+                    optionsContainer.appendChild(button);
+                });
+
+                document.getElementById('quiz-result').textContent = '';
+            }
+
+            function checkAnswer(selectedOption) {
+                if (selectedOption.kor === currentQuestion.kor) {
+                    document.getElementById('quiz-result').textContent = 'Correct!';
+                    const tableRows = document.querySelectorAll('#dataTable tr');
+                    tableRows.forEach(row => {
+                        if (row.getAttribute('data-hira') === currentQuestion.hira) {
+                            row.style.backgroundColor = 'black';
+                            row.style.color = 'white';
+                        }
+                    });
+                    setTimeout(nextQuestion, 1000);
+                } else {
+                    document.getElementById('quiz-result').textContent = `Wrong! The correct answer is ${currentQuestion.hira} (${currentQuestion.kanji})`;
+                }
+            }
         </script>
     </body>
 </html>

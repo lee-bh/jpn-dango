@@ -1,42 +1,39 @@
-# jpn-dango
+# Japanese Vocabulary Practice
 
-jpn-dango is a simple web application designed to help users practice Japanese vocabulary. It displays a list of Japanese words with their Hiragana, Kanji, and Korean translations.
+This is a simple web-based tool for practicing Japanese vocabulary. It displays a table of words and offers an interactive quiz to help you learn.
+
+## Features
+
+- **Vocabulary List**: View a comprehensive table of Japanese words, including their Hiragana, Kanji, and Korean translations.
+- **Toggle Hiragana**: Easily show or hide the Hiragana column to challenge your Kanji reading skills.
+- **Interactive Quiz**: Test your knowledge with a multiple-choice quiz.
+  - A Korean word is presented as the question.
+  - Four options are displayed in a `Kanji (Hiragana)` format.
+  - The answers are arranged in a two-column layout for easy viewing.
+  - Receive instant feedback on your selection.
 
 ## How to Use
 
-1. Clone this repository or download the files.
-2. Open the `index.html` file in your web browser.
-3. You will see a table of Japanese vocabulary.
-4. Use the "히라가나 표시" (Show Hiragana) checkbox at the top to toggle the visibility of the Hiragana column. This can be helpful for testing your memory of Hiragana readings.
+1.  Open the `index.html` file in any modern web browser.
+2.  The vocabulary data is loaded from `data.json`. You can customize your study list by editing this file.
 
-## Contributing
+## Data Format
 
-The vocabulary data is stored in the `data.json` file. If you want to add more words, you can edit this file. The file contains a single JSON object with a key "data", which is an array of vocabulary items. Each item is an object with the following keys:
-
-*   `"cate"`: An integer representing the category of the word (e.g., 1 for i-adjectives, 2 for na-adjectives).
-*   `"hira"`: The Hiragana reading of the word (string).
-*   `"kanji"`: The Kanji representation of the word (string). If no Kanji exists, this can be the same as Hiragana or Katakana.
-*   `"kor"`: The Korean translation of the word (string).
-
-**Example:**
+The `data.json` file follows a simple structure:
 
 ```json
 {
   "data": [
     {
-      "cate": 1,
-      "hira": "おおきい",
-      "kanji": "大きい",
-      "kor": "크다"
+      "hira": "にほんご",
+      "kanji": "日本語",
+      "kor": "일본어"
     },
     {
-      "cate": 2,
-      "hira": "しずか",
-      "kanji": "静か",
-      "kor": "조용한"
+      "hira": "たんご",
+      "kanji": "単語",
+      "kor": "단어"
     }
   ]
 }
 ```
-
-To add a new word, simply add a new object with these keys to the "data" array. Make sure your JSON is valid before saving.
